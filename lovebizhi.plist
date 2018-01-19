@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PATH</key>
+		<string>/usr/local/bin:/usr/local/sbin:/usr/bin/:/bin:/usr/sbin:/sbin</string>
+	</dict>
+	<key>Label</key>
+	<string>com.github.moonfruit.lovebizhi</string>
+	<key>LowPriorityIO</key>
+	<true/>
+	<key>Nice</key>
+	<integer>1</integer>
+	<key>Program</key>
+	<string>/Users/moon/Pictures/lovebizhi/lovebizhi.sh</string>
+	<key>StandardErrorPath</key>
+	<string>/Users/moon/Pictures/lovebizhi/log/lovebizhi.log</string>
+	<key>StandardOutPath</key>
+	<string>/Users/moon/Pictures/lovebizhi/log/lovebizhi.log</string>
+	<key>StartInterval</key>
+	<integer>3600</integer>
+	<key>WorkingDirectory</key>
+	<string>/Users/moon/Pictures/lovebizhi</string>
+</dict>
+</plist>
