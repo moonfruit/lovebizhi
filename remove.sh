@@ -6,6 +6,15 @@ TAGS=tags
 IGNORE=ignore.txt
 IGNORE_ID=ignore_id.txt
 
+remove() {
+	ITEM="$IMAGES/$1"
+	if [[ -f "$ITEM" ]]; then
+		echo "$ITEM"
+		trash "$ITEM"
+	fi
+	find "$TAGS" -depth -name "$1" -print -delete
+}
+
 remove_id() {
 	FILE=$(basename "$1")
 	ID=$(echo "$FILE" | sed 's/,.*//')
@@ -14,7 +23,7 @@ remove_id() {
 		echo "$ID" >>"$IGNORE_ID"
 	fi
 
-	find . -depth -name "$FILE" -print -delete
+	remove "$FILE"
 }
 
 remove_tag() {
@@ -28,10 +37,9 @@ remove_tag() {
 		return
 	fi
 
-	ls -1 $TAGS/$TAG | while read -r FILE; do
-		FILE=$(basename "$FILE")
-		find . -depth -name "$FILE" -print -delete
-	done
+	while read -r FILE; do
+		remove "$(basename "$FILE")"
+	done < <(ls -1 "$TAGS/$TAG")
 }
 
 while [[ $# -gt 0 ]]; do

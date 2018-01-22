@@ -52,7 +52,8 @@ while read -r ID DETAIL URL URL2; do
 			continue 2
 		fi
 		link "$TAG" "$FILE"
-	done < <(wget -O- "$DETAIL" | jq -r '.tags[] | .name')
+#	done < <(wget -O- "$DETAIL" | jq -r '.tags[] | .name')
+	done < <(curl "$DETAIL" | jq -r '.tags[] | .name')
 
 	FILEPATH=$(filepath "$FILE")
 	if [[ -s "$FILEPATH" ]]; then
@@ -68,7 +69,8 @@ while read -r ID DETAIL URL URL2; do
 		remove "$ID" "$FILE"
 	fi
 
-done < <(wget --post-data="$DATA" -O- "$AUTO" | jq -r '.[] | .file_id, .detail, .image.vip_original, .image.original' | paste - - - -)
+#done < <(wget --post-data="$DATA" -O- "$AUTO" | jq -r '.[] | .file_id, .detail, .image.vip_original, .image.original' | paste - - - -)
+done < <(curl -d"$DATA" "$AUTO" | jq -r '.[] | .file_id, .detail, .image.vip_original, .image.original' | paste - - - -)
 
 find "$TAGS" -depth -empty -delete
 
