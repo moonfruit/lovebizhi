@@ -9,6 +9,23 @@ TAGS=tags
 IGNORE=ignore.txt
 IGNORE_ID=ignore_id.txt
 
+json() {
+	if [[ -z "$2" ]]; then
+		echo "GET $1" >&2
+		# wget -O- "$1"
+		curl "$1"
+	else
+		echo "POST $1" >&2
+		# wget --post-data="$2" -O- "$1"
+		curl -d"$2" "$1"
+	fi
+}
+
+download() {
+	echo "DOWNLOAD $1"
+	wget "$1" -O "$2"
+}
+
 filepath() {
 	if [[ ! -d "$IMAGES" ]]; then
 		mkdir -p "$IMAGES"
@@ -52,15 +69,14 @@ while read -r ID DETAIL URL URL2; do
 			continue 2
 		fi
 		link "$TAG" "$FILE"
-#	done < <(wget -O- "$DETAIL" | jq -r '.tags[] | .name')
-	done < <(curl "$DETAIL" | jq -r '.tags[] | .name')
+	done < <(json "$DETAIL" | jq -r '.tags[] | .name')
 
 	FILEPATH=$(filepath "$FILE")
 	if [[ -s "$FILEPATH" ]]; then
 		echo "******** Already download '$ID' ********"
 		continue
 	fi
-	if ! wget "$URL" -O "$FILEPATH"; then
+	if ! download "$URL" "$FILEPATH"; then
 		remove "$ID" "$FILE"
 		continue
 	fi
@@ -69,8 +85,7 @@ while read -r ID DETAIL URL URL2; do
 		remove "$ID" "$FILE"
 	fi
 
-#done < <(wget --post-data="$DATA" -O- "$AUTO" | jq -r '.[] | .file_id, .detail, .image.vip_original, .image.original' | paste - - - -)
-done < <(curl -d"$DATA" "$AUTO" | jq -r '.[] | .file_id, .detail, .image.vip_original, .image.original' | paste - - - -)
+done < <(json "$AUTO" "$DATA" | jq -r '.[] | .file_id, .detail, .image.vip_original, .image.original' | paste - - - -)
 
 find "$TAGS" -depth -empty -delete
 
