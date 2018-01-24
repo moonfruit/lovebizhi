@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-GREP=/usr/local/bin/grep
-
 IMAGES=images
 TAGS=tags
 IGNORE=ignore.txt
@@ -19,7 +17,7 @@ remove_id() {
 	FILE=$(basename "$1")
 	ID=$(echo "$FILE" | sed 's/,.*//')
 
-	if ! $GREP -Fxq "$ID" "$IGNORE_ID"; then
+	if ! grep -Fxq "$ID" "$IGNORE_ID"; then
 		echo "$ID" >>"$IGNORE_ID"
 	fi
 
@@ -29,7 +27,7 @@ remove_id() {
 remove_tag() {
 	TAG=$(basename "$1")
 
-	if ! $GREP -Fxq "$TAG" "$IGNORE"; then
+	if ! grep -Fxq "$TAG" "$IGNORE"; then
 		echo "$TAG" >>"$IGNORE"
 	fi
 
