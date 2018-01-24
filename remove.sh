@@ -43,9 +43,10 @@ remove_tag() {
 }
 
 while [[ $# -gt 0 ]]; do
-	case "$1" in
-		$IMAGES/*) remove_id "$1";;
-		$TAGS/*) remove_tag "$1";;
+	TYPE=$(basename $(dirname "$1"))
+	case "$TYPE" in
+		$IMAGES) remove_id "$1";;
+		$TAGS) remove_tag "$1";;
 	esac
 	shift
 done
